@@ -1,0 +1,54 @@
+span{
+    border: 1ch;
+    background-color: var(--label-background);
+    border-radius: 2%;
+    margin-right: 0.5rem;
+    text-align: center;
+    align-content: center;
+    height: 100%;
+}
+
+.dietary-header{
+    display: inline;
+}
+
+.food-option{
+    text-align: center;
+    text-wrap: balance;
+    border: 0.1rem solid var(--label-background);
+    border-radius: 2%;
+    align-content:space-between;
+    width: 20%;
+    min-width: 120px;
+    height: 3rem;
+    margin: 0.1rem;
+    display: block;
+    overflow: hidden;
+    align-items: flex-end
+}
+
+.food-svgs {
+    display: grid;
+    grid: 30% / 13% auto 13% 2% 13%;
+    margin: 2%;
+}
+
+.dropdown {
+  grid-column-start: 1;
+  width: 100%
+}
+
+.refresh {
+  grid-column-start: 3;
+  width: 100%
+}
+.cross {
+  grid-column-start: 5;
+  width: 100%
+}
+
+@media (prefers-color-scheme: dark) {
+  .dropdown, .cross, .refresh {
+    filter: invert();
+  }
+}
