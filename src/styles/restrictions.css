@@ -1,0 +1,52 @@
+label, .create-btn{
+    width:30%; 
+    height:50px; 
+    overflow:hidden; 
+    display:block; 
+    cursor:pointer;
+    border: 1ch;
+    background-color: var(--label-background);
+    border-radius: 2%;
+    margin: 0;
+    text-align: center;
+    align-content: center;
+}
+
+.create-btn {
+  width: 100%;
+  border-radius: 1%;
+}
+
+input{
+    position: absolute;
+    opacity: 0%; 
+}
+
+label:has(input:checked){
+  background: var(--background);
+  border: 1px solid var(--button-checked);
+  color: var(--text-primary);
+  font-weight: bold;
+}
+
+label:has(input:focus), .create-btn:focus{
+  border: 2px solid var(--button-hover);
+}
+
+/* Enable hover only on non-touch devices */
+@media (hover: hover) and (pointer: fine) {
+  label:hover, .create-btn:hover {
+    background: var(--button-hover);
+    color: var(--button-hover-text);
+    font-weight: bold;
+  }
+  label:hover:has(input[type="checkbox"]:focus)  {
+    background: var(--button-hover);
+    border: 2px solid var(--button-hover);
+
+  }
+  label:hover:has(input[type="checkbox"]:focus):has(input[type="checkbox"]:checked){
+    background: var(--background);
+    border: 2px solid var(--button-hover);
+  }
+}
