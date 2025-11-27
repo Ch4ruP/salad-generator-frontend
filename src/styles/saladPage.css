@@ -1,36 +1,63 @@
 span{
-    border: 1ch;
-    background-color: var(--label-background);
-    border-radius: 2%;
-    margin-right: 0.5rem;
-    text-align: center;
-    align-content: center;
-    height: 100%;
+  border: 1ch;
+  background-color: var(--label-background);
+  border-radius: 2%;
+  margin-right: 0.5rem;
+  margin-top: auto;
+  margin-bottom: auto;
 }
 
-.dietary-header{
-    display: inline;
+.ctas {
+  display: flex;
+  width: 100%;
 }
 
-.food-option{
-    text-align: center;
-    text-wrap: balance;
-    border: 0.1rem solid var(--label-background);
-    border-radius: 2%;
-    align-content:space-between;
-    width: 20%;
-    min-width: 120px;
-    height: 3rem;
-    margin: 0.1rem;
-    display: block;
-    overflow: hidden;
-    align-items: flex-end
+a {
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.dietary-reqs-div {
+  display: inline-flex;
+}
+
+.dietary-header {
+  display: inline;
+}
+
+.restr-element {
+  margin-left: 1%;
+}
+
+.food-group {
+  display: inline-flex;
+}
+
+.food-group-header {
+  margin-top: auto;
+  margin-bottom: auto;
+  margin-right: 2%;
+}
+
+.food-option {
+  text-align: center;
+  text-wrap: balance;
+  border: 0.1rem solid var(--label-background);
+  border-radius: 2%;
+  align-content:space-between;
+  width: 20%;
+  min-width: 120px;
+  height: 3rem;
+  margin: 0.1rem;
+  display: block;
+  overflow: hidden;
+  align-items: flex-end
 }
 
 .food-svgs {
-    display: grid;
-    grid: 30% / 13% auto 13% 2% 13%;
-    margin: 2%;
+  display: grid;
+  grid: 30% / 13% auto 13% 2% 13%;
+  margin: 2%;
 }
 
 .dropdown {
@@ -51,4 +78,31 @@ span{
   .dropdown, .cross, .refresh {
     filter: invert();
   }
+}
+
+.go-back-link {
+  text-decoration: underline;
+  margin-left: 1%;
+  margin-top: auto;
+  margin-bottom: auto;
+  
+}
+
+.go-back-link:link {
+  color: blue;
+}
+
+/* visited link */
+.go-back-link:visited {
+  color: #ffdbe2;
+}
+
+/* mouse over link */
+.go-back-link:hover {
+  color: hotpink;
+}
+
+/* selected link */
+.go-back-link:active {
+  color: red;
 }

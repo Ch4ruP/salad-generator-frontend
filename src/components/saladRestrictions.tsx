@@ -10,11 +10,11 @@ export default function SaladRestrictions() {
     const allergiesList: React.JSX.Element[] = userAllergies.map((allergy: { id: number; value: string }): React.JSX.Element => (
         <span key={allergy.id}>{allergy.value}</span>
     ))
-    const restriction = searchParams.get("dietaryReqsRadioBtn") && searchParams.get("dietaryReqsRadioBtn")!=="None" ? <span>{searchParams.get("dietaryReqsRadioBtn")}</span> : null
+    const restriction = searchParams.get("dietaryReqsRadioBtn") && searchParams.get("dietaryReqsRadioBtn")!=="None" ? <span className='restr-element'>{searchParams.get("dietaryReqsRadioBtn")}</span> : null
     
     return(<>
         {restriction}
         {allergiesList}
-        <Link href="/">Edit</Link>
+        <Link className='go-back-link' href="/">Edit</Link>
     </>)
 }
