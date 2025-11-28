@@ -74,12 +74,6 @@ a {
   width: 100%
 }
 
-@media (prefers-color-scheme: dark) {
-  .dropdown, .cross, .refresh {
-    filter: invert();
-  }
-}
-
 .go-back-link {
   text-decoration: underline;
   margin-left: 1%;
@@ -105,4 +99,34 @@ a {
 /* selected link */
 .go-back-link:active {
   color: red;
+}
+
+.plus {
+  width: 1.5vw;
+  filter: invert(65%) sepia(7%) saturate(2424%) hue-rotate(71deg) brightness(105%) contrast(88%);
+}
+
+.add-new-btn {
+  border: 0.1rem solid var(--label-background);
+  border-radius: 100%;
+  height: 80%;
+  display: flex;
+  justify-content: center;
+  margin-left: 2%;
+  margin-top: auto;
+  margin-bottom: auto;
+}q
+
+#add-new-btn:focus {
+  outline: 2px solid #0000ff;
+  /* Add custom focus styles */
+}
+
+@media (prefers-color-scheme: dark) {
+  .dropdown, .cross, .refresh {
+    filter: invert();
+  }
+  .plus {
+    filter: invert(26%) sepia(41%) saturate(621%) hue-rotate(71deg) brightness(91%) contrast(93%);
+  }
 }

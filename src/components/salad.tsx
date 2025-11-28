@@ -1,4 +1,3 @@
-//'use client'
 import '@/styles/saladPage.css'
 import FoodGroup from './foodGroup';
 
