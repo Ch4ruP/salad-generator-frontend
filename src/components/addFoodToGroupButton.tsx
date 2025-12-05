@@ -1,17 +1,20 @@
  'use client'
 import axios from 'axios';
-import { useState } from "react";
+import { useState, useLayoutEffect } from "react";
 import { useSearchParams } from 'next/navigation';
-
+import FoodSvg from './foodSvgs';
 
 interface foodButtonProps {
     groupName: string,
-    initialGroup: React.JSX.Element[]
+    groupSize: number,
+    initialGroup: {key: number , value:React.JSX.Element}[] | null,
+    counter: number
 }
 
 export default function AddFoodButton(props: foodButtonProps) {
-
-    const [foodEl,setFoodEl] = useState(props.initialGroup)
+        
+    const [idCounter,setIdCounter] = useState(props.counter);
+    const [foodEl,setFoodEl] = useState(props.initialGroup);
     const searchParams = useSearchParams();
     const userAllergies: { id: number; value: string }[] = searchParams.getAll("allergiesCheckbox").map((allergy: string, index: number): { id: number; value: string } => {return {id: index, value: allergy}})
     const restriction = searchParams.get("dietaryReqsRadioBtn")
@@ -44,24 +47,39 @@ export default function AddFoodButton(props: foodButtonProps) {
     }
 
     const onclick =  async () => {
-        setFoodEl([
-          ...foodEl,
-          <div className="food-option">
-            <div className="food-svgs">
-                <img className="dropdown -logo" src="/dropdown.svg" alt={"Select a different "+props.groupName}/>
-                <img className="refresh"src="/refresh.svg" alt={"Refresh salad with a random new "+props.groupName}/>
-                <img className="cross" src="/cross.svg" alt={"Remove "+props.groupName}/>
-            </div>
-            <p className="food-name">{await getIngredient(props.groupName)}</p>
-        </div>
-        ])
+        const ingredient = await getIngredient(props.groupName);
+        const foodToAdd: {key: number , value:React.JSX.Element} = {
+            key: idCounter,
+            value: 
+                <div className="food-option" key={idCounter}>
+                <div className="food-svgs">
+                    <FoodSvg className='dropdown' groupName={props.groupName} ingredient={ingredient}/>
+                    <FoodSvg className='refresh' groupName={props.groupName} ingredient={ingredient}/>
+                    <FoodSvg className='cross' ingredient={ingredient}/>
+                    <button className='cross' onClick={() => removeThisFood(idCounter)}></button>
+                </div>
+                <p className="food-name">{ingredient}</p>
+                </div>
+        } as const;
+        if (foodEl==null) {setFoodEl([foodToAdd]);}
+        else {setFoodEl([...foodEl, foodToAdd]);}
+        setIdCounter(idCounter+1);
     }
 
+    const removeThisFood = (id: number) => {
+        const currentKey: number = id;
+        const newFoodEl = foodEl ? foodEl.filter(food => food.key!=currentKey) : foodEl;
+        setFoodEl(newFoodEl)
+    }
+    
     return (<>
-        {foodEl}
-        <button className='add-new-btn' aria-label={"Add New "+props.groupName} title="Add New" 
-        onClick={onclick}>
-            <img className='plus' src="/plus.svg" alt={"Add new "+props.groupName}/>
-        </button>
+        <div className='food-group'>
+            <h2 className='food-group-header'>{props.groupName}</h2>
+            {foodEl ? foodEl.map(food => food.value) : null}
+            <button className='add-new-btn' aria-label={"Add New "+props.groupName} title="Add New" 
+            onClick={onclick}>
+                <img className='plus' src="/plus.svg" alt={"Add new "+props.groupName}/>
+            </button>
+        </div>
     </>)
 }

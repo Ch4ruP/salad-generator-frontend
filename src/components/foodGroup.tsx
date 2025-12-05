@@ -1,5 +1,6 @@
 import axios from 'axios';
-import AddFoodButton from '@/components/addFoodToGroupButton'
+import AddFoodButton from '@/components/addFoodToGroupButton';
+import FoodSvg from './foodSvgs';
 
 interface foodGroupProps {
     groupName: string,
@@ -23,23 +24,29 @@ export default async function FoodGroup(props: foodGroupProps) {
         }
     }
 
-    var foodEl: React.JSX.Element[] = [];
+    var foodEl: {key: number , value:React.JSX.Element}[] = [];
+    var idCounter = 0;
     for(let i = 0; i<props.groupSize;i++){
-        foodEl.push(
-        <div className="food-option">
-            <div className="food-svgs">
-                <img className="dropdown -logo" src="/dropdown.svg" alt={"Select a different "+props.groupName}/>
-                <img className="refresh"src="/refresh.svg" alt={"Refresh salad with a random new "+props.groupName}/>
-                <img className="cross" src="/cross.svg" alt={"Remove "+props.groupName}/>
-            </div>
-            <p className="food-name">{await getIngredient(props.groupName)}</p>
-        </div>)
+        const ingredient = await getIngredient(props.groupName);
+        foodEl.push({
+            key: idCounter,
+            value: 
+                <div className="food-option">
+                 <div className="food-svgs">
+                    <FoodSvg className='dropdown' groupName={props.groupName} ingredient={ingredient}/>
+                    <FoodSvg className='refresh' groupName={props.groupName} ingredient={ingredient}/>
+                    <FoodSvg className='cross' ingredient={ingredient}/>
+                 </div>
+                 <p className="food-name">{ingredient}</p>
+                </div>
+        })
+        idCounter++;
+
     }
 
     return(<>
     <div className='food-group'>
-        <h2 className='food-group-header'>{props.groupName}</h2>
-       <AddFoodButton groupName={props.groupName} initialGroup={foodEl}/>
+       <AddFoodButton groupName={props.groupName} groupSize={props.groupSize} initialGroup={foodEl} counter={idCounter}/>
     </div>
     </>)
 }
