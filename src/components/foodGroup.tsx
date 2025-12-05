@@ -45,8 +45,6 @@ export default async function FoodGroup(props: foodGroupProps) {
     }
 
     return(<>
-    <div className='food-group'>
        <AddFoodButton groupName={props.groupName} groupSize={props.groupSize} initialGroup={foodEl} counter={idCounter}/>
-    </div>
     </>)
 }

@@ -56,8 +56,27 @@ a {
 
 .food-svgs {
   display: grid;
-  grid: 30% / 13% auto 13% 2% 13%;
+  grid: 100% / 13% auto 13% 2% 13%;
   margin: 2%;
+}
+
+.svg-btn {
+  aspect-ratio: 1 / 1;
+  background: none;
+	color: inherit;
+	border: none;
+}
+
+.cross-btn {
+  grid-column-start: 5;
+}
+
+.refresh-btn {
+  grid-column-start: 3;
+}
+
+.svg-btn:focus{
+  outline: revert;
 }
 
 .dropdown {
@@ -71,7 +90,8 @@ a {
 }
 .cross {
   grid-column-start: 5;
-  width: 100%
+  width: 100%;
+  aspect-ratio: 1 / 1;
 }
 
 .go-back-link {
@@ -129,4 +149,8 @@ a {
   .plus {
     filter: invert(26%) sepia(41%) saturate(621%) hue-rotate(71deg) brightness(91%) contrast(93%);
   }
+}
+
+button:hover {
+  cursor: pointer
 }

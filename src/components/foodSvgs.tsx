@@ -22,9 +22,9 @@ export default function FoodSvg(props: svgProps) {
     const getAltName = (function () {
         switch (props.className) {
             case "dropdown":
-            return "Choose a different "+props.groupName+"- currently "+props.ingredient;
+            return "Choose a different "+props.groupName+" - currently "+props.ingredient;
             case "refresh":
-            return "Refresh salad with a random new "+props.groupName+"- currently "+props.ingredient;
+            return "Refresh salad with a random new "+props.groupName+" - currently "+props.ingredient;
             case "cross":
             return "Remove "+props.ingredient;
         }

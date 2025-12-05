@@ -1,6 +1,6 @@
  'use client'
 import axios from 'axios';
-import { useState, useLayoutEffect } from "react";
+import { useState, useEffect } from "react";
 import { useSearchParams } from 'next/navigation';
 import FoodSvg from './foodSvgs';
 
@@ -16,7 +16,8 @@ export default function AddFoodButton(props: foodButtonProps) {
     const [idCounter,setIdCounter] = useState(props.counter);
     const [foodEl,setFoodEl] = useState(props.initialGroup);
     const searchParams = useSearchParams();
-    const userAllergies: { id: number; value: string }[] = searchParams.getAll("allergiesCheckbox").map((allergy: string, index: number): { id: number; value: string } => {return {id: index, value: allergy}})
+    const userAllergies: { id: number; value: string }[] = searchParams.getAll("allergiesCheckbox").map((allergy: string,
+         index: number): { id: number; value: string } => {return {id: index, value: allergy}})
     const restriction = searchParams.get("dietaryReqsRadioBtn")
     const restrMap = (function () {
         switch (restriction) {
@@ -29,7 +30,8 @@ export default function AddFoodButton(props: foodButtonProps) {
             default:
             return 1;
         }
-        })();
+    })();
+
 
     async function getIngredient(foodGroup: string): Promise<string> {
         try {
@@ -54,22 +56,49 @@ export default function AddFoodButton(props: foodButtonProps) {
                 <div className="food-option" key={idCounter}>
                 <div className="food-svgs">
                     <FoodSvg className='dropdown' groupName={props.groupName} ingredient={ingredient}/>
-                    <FoodSvg className='refresh' groupName={props.groupName} ingredient={ingredient}/>
-                    <FoodSvg className='cross' ingredient={ingredient}/>
-                    <button className='cross' onClick={() => removeThisFood(idCounter)}></button>
+                    <button className='refresh-btn svg-btn' onClick={() => updateIngredient(idCounter)} aria-label="Refresh">
+                        <FoodSvg className='refresh' groupName={props.groupName} ingredient={ingredient}/>
+                    </button>
+                    <button className='cross-btn svg-btn' onClick={() => removeThisFood(idCounter)} aria-label="Remove">
+                        <FoodSvg className='cross' ingredient={ingredient}/>
+                    </button>
                 </div>
                 <p className="food-name">{ingredient}</p>
                 </div>
-        } as const;
+        };
         if (foodEl==null) {setFoodEl([foodToAdd]);}
         else {setFoodEl([...foodEl, foodToAdd]);}
         setIdCounter(idCounter+1);
     }
 
-    const removeThisFood = (id: number) => {
-        const currentKey: number = id;
-        const newFoodEl = foodEl ? foodEl.filter(food => food.key!=currentKey) : foodEl;
-        setFoodEl(newFoodEl)
+    const removeThisFood = (key: number) => {
+        const currentKey: number = key;
+        setFoodEl(currentFoodEl => (currentFoodEl == null)? null : currentFoodEl.filter(food => food.key !== currentKey));
+    }
+
+    const updateIngredient = async (key: number) => {
+        const currentKey: number = key;
+        const currentFoodEl = foodEl?.filter(food => food.key === currentKey);
+        if (currentFoodEl) {
+            const newIngredient = await getIngredient(props.groupName);
+            const newFoodEl: {key: number , value:React.JSX.Element} = {
+                key: currentKey,
+                value: 
+                    <div className="food-option" key={currentKey}>
+                    <div className="food-svgs">
+                        <FoodSvg className='dropdown' groupName={props.groupName} ingredient={newIngredient}/>
+                        <button className='refresh-btn svg-btn' onClick={() => updateIngredient(currentKey)} aria-label="Refresh">
+                            <FoodSvg className='refresh' groupName={props.groupName} ingredient={newIngredient}/>
+                        </button>                        
+                        <button className='cross-btn svg-btn' onClick={() => removeThisFood(currentKey)} aria-label="Remove ">
+                            <FoodSvg className='cross' ingredient={newIngredient}/>
+                        </button>
+                    </div>
+                    <p className="food-name">{newIngredient}</p>
+                    </div>
+            };
+            setFoodEl(currentFoodEl => (currentFoodEl == null) ? null : currentFoodEl.map(food => food.key===currentKey ? newFoodEl : food))
+        } 
     }
     
     return (<>
