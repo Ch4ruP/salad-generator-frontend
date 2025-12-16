@@ -24,7 +24,7 @@ export default async function FoodGroup(props: foodGroupProps) {
         }
     }
 
-    var foodEl: {key: number , value:React.JSX.Element}[] = [];
+    /* var foodEl: {key: number , value:React.JSX.Element}[] = [];
     var idCounter = 0;
     for(let i = 0; i<props.groupSize;i++){
         const ingredient = await getIngredient(props.groupName);
@@ -40,11 +40,11 @@ export default async function FoodGroup(props: foodGroupProps) {
                  <p className="food-name">{ingredient}</p>
                 </div>
         })
-        idCounter++;
+        idCounter++; 
 
-    }
+    }*/
 
     return(<>
-       <AddFoodButton groupName={props.groupName} groupSize={props.groupSize} initialGroup={foodEl} counter={idCounter}/>
+       <AddFoodButton groupName={props.groupName} groupSize={props.groupSize}/>
     </>)
 }
