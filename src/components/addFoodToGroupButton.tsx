@@ -32,9 +32,7 @@ export default function AddFoodButton(props: foodButtonProps) {
     })();
 
     useEffect(() => {
-        // declare the async data fetching function
         setInitFoodEls([]);
-        // setFoodEl([]);
         const fetchfoodElems = async () => {
             let initFoodEls: string[] = [];
             for (let i = 0; i < props.groupSize; i++ ) {
@@ -44,14 +42,11 @@ export default function AddFoodButton(props: foodButtonProps) {
             }
         }
 
-        // call the function
         fetchfoodElems()
-        // make sure to catch any error
         .catch(console.error);
     }, []);
 
     useEffect(() => {
-        console.log(foodEl?.toString())
         let tempFoodEls = [];
         for (let i = 0; i < props.groupSize; i++) {
             const newIngredient = initFoodEls[i];
@@ -60,8 +55,9 @@ export default function AddFoodButton(props: foodButtonProps) {
                 value: 
                     <div className="food-option" key={i}>
                     <div className="food-svgs">
-                        <FoodSvg className='dropdown' groupName={props.groupName} ingredient={newIngredient}/>
-                        <button className='refresh-btn svg-btn' onClick={() => updateIngredient(i)} aria-label="Refresh">
+                        <button className='dropdown-btn svg-btn' onClick={() => dropdownOptions()} aria-label="Show Other Options">
+                            <FoodSvg className='dropdown' groupName={props.groupName} ingredient={newIngredient}/>
+                        </button>                        <button className='refresh-btn svg-btn' onClick={() => updateIngredient(i)} aria-label="Refresh">
                             <FoodSvg className='refresh' groupName={props.groupName} ingredient={newIngredient}/>
                         </button>                        
                         <button className='cross-btn svg-btn' onClick={() => removeThisFood(i)} aria-label="Remove ">
@@ -92,6 +88,30 @@ export default function AddFoodButton(props: foodButtonProps) {
         }
     }
 
+    async function getIngredients(foodGroup: string): Promise<Object[]|null> {
+        try {
+            let userData = {
+                category: foodGroup,
+                allergies: userAllergies,
+                restrs: restrMap
+            }
+            const response = await axios.post('http://localhost:5432/getIngredients', {data: userData})
+            let ingredientOptions: Object[] = [];
+            if(response.data) { 
+                for (let i = 0; i < response.data.length; i++) {ingredientOptions.push(response.data[i].name)};
+                return ingredientOptions 
+            } else { return null }
+        } catch (error) {
+            console.error(error);
+            return null
+        }
+    }
+
+    const dropdownOptions = async () => {
+        const ingredients = await getIngredients(props.groupName);
+        alert(ingredients);
+    }
+
     const addNewFood =  async () => {
         const ingredient = await getIngredient(props.groupName);
         const foodToAdd: {key: number , value:React.JSX.Element} = {
@@ -99,7 +119,9 @@ export default function AddFoodButton(props: foodButtonProps) {
             value: 
                 <div className="food-option" key={idCounter}>
                 <div className="food-svgs">
-                    <FoodSvg className='dropdown' groupName={props.groupName} ingredient={ingredient}/>
+                    <button className='dropdown-btn svg-btn' onClick={() => dropdownOptions()} aria-label="Show Other Options">
+                        <FoodSvg className='dropdown' groupName={props.groupName} ingredient={ingredient}/>
+                    </button>
                     <button className='refresh-btn svg-btn' onClick={() => updateIngredient(idCounter)} aria-label="Refresh">
                         <FoodSvg className='refresh' groupName={props.groupName} ingredient={ingredient}/>
                     </button>
@@ -130,7 +152,9 @@ export default function AddFoodButton(props: foodButtonProps) {
                 value: 
                     <div className="food-option" key={currentKey}>
                     <div className="food-svgs">
-                        <FoodSvg className='dropdown' groupName={props.groupName} ingredient={newIngredient}/>
+                        <button className='dropdown-btn svg-btn' onClick={() => dropdownOptions()} aria-label="Show Other Options">
+                            <FoodSvg className='dropdown' groupName={props.groupName} ingredient={newIngredient}/>
+                        </button>                        
                         <button className='refresh-btn svg-btn' onClick={() => updateIngredient(currentKey)} aria-label="Refresh">
                             <FoodSvg className='refresh' groupName={props.groupName} ingredient={newIngredient}/>
                         </button>                        
