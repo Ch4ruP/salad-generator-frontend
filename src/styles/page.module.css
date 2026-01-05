@@ -27,7 +27,7 @@
   align-items: flex-start;
   justify-content: space-around;
   background-color: var(--foreground);
-  padding: 120px 60px;
+  padding: 10vw 5vw;
 }
 
 .intro {
@@ -84,12 +84,17 @@
 
   .intro {
     gap: 16px;
+    flex-wrap: wrap;
   }
 
   .intro h1, .body h2{
     font-size: 32px;
     line-height: 40px;
     letter-spacing: -1.92px;
+  }
+
+  .ctas {
+    flex-wrap: wrap;
   }
 }
 

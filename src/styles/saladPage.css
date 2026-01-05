@@ -23,13 +23,15 @@ a {
 
 .dietary-header {
   display: inline;
+  margin-right: 1%;
 }
 
 .restr-element {
-  margin-left: 1%;
+  margin-right: 1%;
 }
 
 .food-group {
+  flex-wrap: wrap;
   display: inline-flex;
 }
 
@@ -41,13 +43,10 @@ a {
 
 .food-option {
   text-align: center;
-  text-wrap: balance;
   border: 0.1rem solid var(--label-background);
   border-radius: 2%;
   align-content:space-between;
-  width: 20%;
   min-width: 120px;
-  height: 3rem;
   margin: 0.1rem;
   display: block;
   overflow: hidden;
@@ -60,8 +59,13 @@ a {
   margin: 2%;
 }
 
+.food-name {
+  white-space: nowrap;
+}
+
 .svg-btn {
   aspect-ratio: 1 / 1;
+  max-width: 15px; 
   background: none;
 	color: inherit;
 	border: none;
@@ -96,7 +100,6 @@ a {
 
 .go-back-link {
   text-decoration: underline;
-  margin-left: 1%;
   margin-top: auto;
   margin-bottom: auto;
   
@@ -135,11 +138,10 @@ a {
   margin-left: 2%;
   margin-top: auto;
   margin-bottom: auto;
-}q
+}
 
 #add-new-btn:focus {
   outline: 2px solid #0000ff;
-  /* Add custom focus styles */
 }
 
 @media (prefers-color-scheme: dark) {
@@ -148,6 +150,21 @@ a {
   }
   .plus {
     filter: invert(26%) sepia(41%) saturate(621%) hue-rotate(71deg) brightness(91%) contrast(93%);
+  }
+}
+
+@media (max-width: 600px) {
+  .dietary-header, .food-group-header {
+    flex: 0 0 100%;
+  }
+  .ctas, .food-group {
+    flex-wrap: wrap;
+    row-gap: 3%;
+    margin: 5% 0% 4% 0%;
+  }
+
+  .food-group {
+    margin: 0% 0% 2%;
   }
 }
 
