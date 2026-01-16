@@ -7,6 +7,15 @@ span{
   margin-bottom: auto;
 }
 
+select {
+  color: var(--text-primary);
+  background-color: var(--background);
+  max-width: 100%;
+  max-height: 100%;
+  border-color: var(--background);
+  aspect-ratio: 1 / 1;
+}
+
 .ctas {
   display: flex;
   width: 100%;
@@ -33,6 +42,7 @@ a {
 .food-group {
   flex-wrap: wrap;
   display: inline-flex;
+  width: 100%;
 }
 
 .food-group-header {
@@ -50,7 +60,9 @@ a {
   margin: 0.1rem;
   display: block;
   overflow: hidden;
-  align-items: flex-end
+  align-items: flex-end;
+  padding-left: 2px;
+  padding-right: 2px;
 }
 
 .food-svgs {
@@ -126,6 +138,7 @@ a {
 
 .plus {
   width: 1.5vw;
+  min-width: 22px;
   filter: invert(65%) sepia(7%) saturate(2424%) hue-rotate(71deg) brightness(105%) contrast(88%);
 }
 

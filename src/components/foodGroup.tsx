@@ -1,6 +1,6 @@
  'use client'
 import axios from 'axios';
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useSearchParams } from 'next/navigation';
 import FoodSvg from './foodSvgs';
 
@@ -13,6 +13,7 @@ export default function FoodGroup(props: foodGroupProps) {
     const [idCounter,setIdCounter] = useState(0);
     const [initFoodEls, setInitFoodEls] = useState<string[]>([]);
     const [foodEl,setFoodEl] = useState<{key: number, name: string, value:React.JSX.Element}[] | null>(null);
+    const dropdownOptions = useRef<string[]>([])
     const searchParams = useSearchParams();
     const userAllergies: { id: number; value: string }[] = searchParams.getAll("allergiesCheckbox").map((allergy: string,
          index: number): { id: number; value: string } => {return {id: index, value: allergy}})
@@ -37,9 +38,11 @@ export default function FoodGroup(props: foodGroupProps) {
             value: 
                 <div className="food-option" key={key}>
                 <div className="food-svgs">
-                    <button className='dropdown-btn svg-btn' onClick={() => dropdownOptions()} aria-label="Show Other Options">
-                        <FoodSvg className='dropdown' groupName={props.groupName} ingredient={ingredient}/>
-                    </button>
+                    <div className="dropdown-btn svg-btn">
+                        <select defaultValue={''} onChange={(e) => pickDropdownOption(key, e.target.value)}>
+                            {dropdownOptions.current.map((option) => <option key={option} value={option}>{option}</option>)}
+                        </select>
+                    </div>
                     <button className='refresh-btn svg-btn' onClick={() => updateIngredient(key)} aria-label="Refresh">
                         <FoodSvg className='refresh' groupName={props.groupName} ingredient={ingredient}/>
                     </button>
@@ -71,6 +74,7 @@ export default function FoodGroup(props: foodGroupProps) {
     useEffect(() => {
         let tempFoodEls = [];
         for (let i = 0; i < props.groupSize; i++) {
+            showDropdownOptions(i);
             const newIngredient = initFoodEls[i];
             const newFoodEl: {key: number, name: string, value:React.JSX.Element} = newIngredientObject(newIngredient,i)
             tempFoodEls.push(newFoodEl);
@@ -120,9 +124,25 @@ export default function FoodGroup(props: foodGroupProps) {
         }
     }
 
-    const dropdownOptions = async () => {
+    const showDropdownOptions = async (key: number) => {
         const ingredients = await getIngredients(props.groupName);
-        alert(ingredients);
+        if (ingredients) {
+            dropdownOptions.current = []
+            for (let i = 0; i < 5; i++) {
+                if (ingredients[i]) {
+                    dropdownOptions.current = dropdownOptions.current === null 
+                        ? [ingredients[i].toString()] 
+                        : [...dropdownOptions.current, ingredients[i].toString()]
+                }
+            }
+        }
+    }
+
+    const pickDropdownOption = (key: number, newIngredient: string) => {
+        if (newIngredient === 'default'){return;}
+        const currentKey: number = key;
+        const newFoodEl: {key: number, name: string, value:React.JSX.Element} = newIngredientObject(newIngredient,currentKey); 
+        setFoodEl(currentFoodEl => (currentFoodEl == null) ? null : currentFoodEl.map(food => food.key===currentKey ? newFoodEl : food));
     }
     
     const addNewFood =  async () => {
